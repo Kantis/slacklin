@@ -17,11 +17,12 @@ class SlackWebClientImplTest {
 
             client.apiTest(Optional.empty(), mapOf())
             client.apiTest(Optional.empty(), mapOf())
+            client.apiTest(Optional.empty(), mapOf())
         }
 
         val delta = System.currentTimeMillis() - timestamp
 
-        assertTrue(delta > 1000, "Delta was $delta")
+        assertTrue(delta > 2000, "Delta was $delta")
 
     }
 
