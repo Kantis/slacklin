@@ -20,8 +20,13 @@ class SlackWebClientImpl(private val token: String) : SlackWebClient {
         return authTest.post(mapOf("token" to token), AuthTestResponse::class.java)
     }
 
-    override suspend fun usersList(): UsersListResponse {
-        return usersList.get(mapOf("token" to token), UsersListResponse::class.java)
+    override suspend fun usersList(limit: Int, cursor: String?): UsersListResponse {
+        val data = HashMap<String, String>()
+        data["token"] = token
+        data["limit"] = limit.toString()
+        if (cursor != null) data["cursor"] = cursor
+
+        return usersList.get(data, UsersListResponse::class.java)
     }
 
 }

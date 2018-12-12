@@ -1,7 +1,5 @@
 package se.codeboss.slacklin.internal
 
-import com.google.gson.FieldNamingPolicy
-import com.google.gson.GsonBuilder
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -17,10 +15,7 @@ class Endpoint(
     private val semaphore = Semaphore(1)
     private val millisBetweenCalls = 60000 / callsPerMinute
 
-    private val gson =
-        GsonBuilder()
-            .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-            .create()!!
+    private val gson = GsonBuilder.build()
 
     suspend fun <T> post(payload: Map<String, String>, clazz: Class<T>): T {
         throttle()
@@ -28,6 +23,7 @@ class Endpoint(
     }
 
     suspend fun <T> get(parameters: Map<String, String>, clazz: Class<T>): T {
+        throttle()
         return gson.fromJson(khttp.get(url, data = parameters).text, clazz)
     }
 

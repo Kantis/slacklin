@@ -110,8 +110,9 @@ class SlackWebClientImplTest {
 
             runBlocking {
                 val client = SlackWebClientImpl(System.getProperty("slack.token"))
-                val response = client.usersList()
+                val response = client.usersList(limit = 1)
 
+                // Tip: Add a breakpoint below to inspect the response
                 with(response) {
                     assertTrue(ok)
                 }

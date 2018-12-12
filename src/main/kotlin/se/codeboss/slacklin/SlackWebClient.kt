@@ -7,5 +7,5 @@ import se.codeboss.slacklin.model.UsersListResponse
 interface SlackWebClient {
     suspend fun apiTest(error: String? = null, argsToReturn: Map<String, String> = mapOf()): ApiTestResponse
     suspend fun authTest(): AuthTestResponse
-    suspend fun usersList(): UsersListResponse
+    suspend fun usersList(limit: Int = 0, cursor: String? = null): UsersListResponse
 }
