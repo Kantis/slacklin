@@ -27,8 +27,8 @@ class Endpoint(
         return gson.fromJson(khttp.post(url, data = payload).text, clazz)
     }
 
-    suspend fun <T> get(clazz: Class<T>): T {
-        return gson.fromJson(khttp.get(url).text, clazz)
+    suspend fun <T> get(parameters: Map<String, String>, clazz: Class<T>): T {
+        return gson.fromJson(khttp.get(url, data = parameters).text, clazz)
     }
 
     private suspend fun throttle() {

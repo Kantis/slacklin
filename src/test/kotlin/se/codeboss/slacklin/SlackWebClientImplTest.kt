@@ -1,6 +1,7 @@
 package se.codeboss.slacklin
 
 import kotlinx.coroutines.runBlocking
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -96,6 +97,25 @@ class SlackWebClientImplTest {
                 }
             }
 
+        }
+
+    }
+
+    @Nested
+    inner class UsersListTest {
+
+        @Disabled
+        @Test
+        fun `make a real call`() {
+
+            runBlocking {
+                val client = SlackWebClientImpl(System.getProperty("slack.token"))
+                val response = client.usersList()
+
+                with(response) {
+                    assertTrue(ok)
+                }
+            }
         }
 
     }
