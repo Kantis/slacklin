@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import se.codeboss.slacklin.model.ChannelType
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -117,6 +118,29 @@ class SlackWebClientImplTest {
                     assertTrue(ok)
                 }
             }
+        }
+
+    }
+
+    @Nested
+    inner class ConversationsListTest {
+
+        @Disabled
+        @Test
+        fun `make a real call`() {
+
+            runBlocking {
+                val client = SlackWebClientImpl(System.getProperty("slack.token"))
+                val response = client.conversationsList(limit = 100, types = listOf(ChannelType.PrivateChannel))
+                val x = response.channels.filter { it.name == "codemonkeys" }
+                val r2 = client.conversationsInfo(x[0].id)
+
+                // Tip: Add a breakpoint below to inspect the response
+                with(r2) {
+                    assertTrue(ok)
+                }
+            }
+
         }
 
     }
