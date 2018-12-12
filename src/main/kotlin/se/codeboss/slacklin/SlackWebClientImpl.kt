@@ -3,6 +3,7 @@ package se.codeboss.slacklin
 import se.codeboss.slacklin.internal.Endpoint
 import se.codeboss.slacklin.internal.toLowerCaseWithUnderscores
 import se.codeboss.slacklin.model.*
+import java.time.LocalDateTime
 
 class SlackWebClientImpl(private val token: String) : SlackWebClient {
 
@@ -44,6 +45,17 @@ class SlackWebClientImpl(private val token: String) : SlackWebClient {
         data["channel"] = channelId.id
 
         return conversationsInfo.get(data, ConversationsInfoResponse::class.java)
+    }
+
+    override suspend fun conversationsHistory(
+        channel: ChannelId,
+        cursor: String?,
+        inclusive: Boolean,
+        latest: LocalDateTime?,
+        limit: Int?,
+        oldest: LocalDateTime?
+    ) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun prepareData(limit: Int? = null, cursor: String? = null): MutableMap<String, String> {

@@ -1,5 +1,7 @@
 package se.codeboss.slacklin.model
 
+import java.time.LocalDateTime
+
 data class User (
     val id: String,
     val teamId: String,
@@ -17,6 +19,6 @@ data class User (
     val isRestricted: Boolean,
     val isUltraRestricted: Boolean,
     val isBot: Boolean,
-    val updated: Long,
+    val updated: LocalDateTime,
     val has2fa: Boolean
 )
