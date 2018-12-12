@@ -2,52 +2,92 @@ package se.codeboss.slackclient
 
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SlackWebClientImplTest {
 
-    @Test
-    fun `burst apiTest`() {
+    @Nested
+    inner class ApiTestTest {
 
-        val timestamp = System.currentTimeMillis()
+        @Test
+        fun `burst apiTest`() {
 
-        runBlocking {
-            val client = SlackWebClientImpl("dummy")
+            val timestamp = System.currentTimeMillis()
 
-            client.apiTest()
-            client.apiTest()
-            client.apiTest()
+            runBlocking {
+                val client = SlackWebClientImpl("dummy")
+
+                client.apiTest()
+                client.apiTest()
+                client.apiTest()
+            }
+
+            val delta = System.currentTimeMillis() - timestamp
+
+            assertTrue(delta > 2000, "Delta was $delta")
+
         }
 
-        val delta = System.currentTimeMillis() - timestamp
+        @Test
+        fun `args are passed`() {
+            runBlocking {
+                val client = SlackWebClientImpl("dummy")
 
-        assertTrue(delta > 2000, "Delta was $delta")
+                val argsToReturn = mapOf("hej" to "hello", "x" to "z")
 
+                val response = client.apiTest(argsToReturn = argsToReturn)
+                assertTrue(response.ok)
+                assertEquals(argsToReturn, response.args)
+            }
+        }
+
+        @Test
+        fun `error is passed`() {
+            runBlocking {
+                val client = SlackWebClientImpl("dummy")
+
+                val expected = "myError"
+                val response = client.apiTest(error = expected)
+                assertFalse(response.ok)
+                assertEquals(expected, response.error)
+            }
+        }
     }
 
-    @Test
-    fun `args are passed`() {
-        runBlocking {
-            val client = SlackWebClientImpl("dummy")
+    @Nested
+    inner class AuthTestTest {
 
-            val argsToReturn = mapOf("hej" to "hello", "x" to "z")
+        @Test
+        fun `bogus token`() {
+            runBlocking {
+                val client = SlackWebClientImpl("not-a-token")
+                val response = client.authTest()
 
-            val response = client.apiTest(argsToReturn = argsToReturn)
-            assertTrue(response.ok)
-            assertEquals(argsToReturn, response.args)
+                assertFalse(response.ok)
+            }
         }
-    }
 
-    @Test
-    fun `error is passed`() {
-        runBlocking {
-            val client = SlackWebClientImpl("dummy")
+        @Test
+        fun `real token`() {
+            runBlocking {
+                val client = SlackWebClientImpl(System.getProperty("slack.token"))
+                val response = client.authTest()
 
-            val expected = "myError"
-            val response = client.apiTest(error = expected)
-            assertFalse(response.ok)
-            assertEquals(expected, response.error)
+                with(response) {
+                    assertTrue(ok)
+                    assertTrue(url.contains("slack.com/"))
+                    assertTrue(team.isNotEmpty())
+                    assertTrue(user.isNotEmpty())
+                    assertTrue(teamId.isNotEmpty())
+                    assertTrue(userId.isNotEmpty())
+                }
+            }
+
         }
+
     }
 
 }
