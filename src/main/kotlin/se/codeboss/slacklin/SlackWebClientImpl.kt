@@ -1,8 +1,8 @@
-package se.codeboss.slackclient
+package se.codeboss.slacklin
 
-import se.codeboss.slackclient.internal.Endpoint
-import se.codeboss.slackclient.model.ApiTestResponse
-import se.codeboss.slackclient.model.AuthTestResponse
+import se.codeboss.slacklin.internal.Endpoint
+import se.codeboss.slacklin.model.ApiTestResponse
+import se.codeboss.slacklin.model.AuthTestResponse
 
 class SlackWebClientImpl(private val token: String) : SlackWebClient {
     private val apiTest = Endpoint("api.test", 100)

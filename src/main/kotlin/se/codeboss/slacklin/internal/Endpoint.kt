@@ -1,4 +1,4 @@
-package se.codeboss.slackclient.internal
+package se.codeboss.slacklin.internal
 
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder

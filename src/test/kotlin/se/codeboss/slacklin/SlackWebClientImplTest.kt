@@ -1,14 +1,21 @@
-package se.codeboss.slackclient
+package se.codeboss.slacklin
 
 import kotlinx.coroutines.runBlocking
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SlackWebClientImplTest {
 
+    /**
+     * ApiTest tests are using LIVE APIs and should not be part of any CI-workflow
+     * Future tests should instead mock data and these tests should be marked as
+     * @Ignored, intended for manual use
+     */
     @Nested
     inner class ApiTestTest {
 
@@ -57,6 +64,9 @@ class SlackWebClientImplTest {
         }
     }
 
+    /**
+     * @see ApiTestTest
+     */
     @Nested
     inner class AuthTestTest {
 

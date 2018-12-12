@@ -1,4 +1,4 @@
-package se.codeboss.slackclient.model
+package se.codeboss.slacklin.model
 
 data class ApiTestResponse(
     val ok: Boolean,
