@@ -1,4 +1,4 @@
-package se.codeboss.slacklin.model
+package se.codeboss.slacklin.response
 
 data class ConversationsHistoryResponse (
     val ok: Boolean

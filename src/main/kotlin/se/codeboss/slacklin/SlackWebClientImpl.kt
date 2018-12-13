@@ -1,17 +1,22 @@
 package se.codeboss.slacklin
 
 import se.codeboss.slacklin.internal.Endpoint
+import se.codeboss.slacklin.internal.httpfacade.Http
 import se.codeboss.slacklin.internal.toLowerCaseWithUnderscores
-import se.codeboss.slacklin.model.*
+import se.codeboss.slacklin.model.ChannelId
+import se.codeboss.slacklin.model.ChannelType
+import se.codeboss.slacklin.response.*
 import java.time.LocalDateTime
 
-class SlackWebClientImpl(private val token: String) : SlackWebClient {
+class SlackWebClientImpl(private val token: String, http: Http) : SlackWebClient {
 
-    private val apiTest = Endpoint("api.test", 100)
-    private val authTest = Endpoint("auth.test", 1000)
-    private val usersList = Endpoint("users.list", 20)
-    private val conversationsList = Endpoint("conversations.list", 20)
-    private val conversationsInfo = Endpoint("conversations.info", 50)
+    private val endpointBuilder = Endpoint.Builder(http)
+
+    private val apiTest = endpointBuilder.build("api.test", 100)
+    private val authTest = endpointBuilder.build("auth.test", 1000)
+    private val usersList = endpointBuilder.build("users.list", 20)
+    private val conversationsList = endpointBuilder.build("conversations.list", 20)
+    private val conversationsInfo = endpointBuilder.build("conversations.info", 50)
 
     override suspend fun apiTest(error: String?, argsToReturn: Map<String, String>): ApiTestResponse {
         val payload = if (error != null) mapOf("error" to error) + argsToReturn else argsToReturn
@@ -40,15 +45,15 @@ class SlackWebClientImpl(private val token: String) : SlackWebClient {
         return conversationsList.get(data, ConversationsListResponse::class.java)
     }
 
-    override suspend fun conversationsInfo(channelId: ChannelId): ConversationsInfoResponse {
+    override suspend fun conversationsInfo(id: ChannelId): ConversationsInfoResponse {
         val data = prepareData()
-        data["channel"] = channelId.id
+        data["channel"] = id.id
 
         return conversationsInfo.get(data, ConversationsInfoResponse::class.java)
     }
 
     override suspend fun conversationsHistory(
-        channel: ChannelId,
+        id: ChannelId,
         cursor: String?,
         inclusive: Boolean,
         latest: LocalDateTime?,

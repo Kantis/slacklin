@@ -1,4 +1,6 @@
-package se.codeboss.slacklin.model
+package se.codeboss.slacklin.response
+
+import se.codeboss.slacklin.model.Channel
 
 
 /*

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import se.codeboss.slacklin.internal.httpfacade.KhttpImpl
 import se.codeboss.slacklin.model.ChannelType
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -27,7 +28,7 @@ class SlackWebClientImplTest {
             val timestamp = System.currentTimeMillis()
 
             runBlocking {
-                val client = SlackWebClientImpl("dummy")
+                val client = SlackWebClientImpl("dummy", KhttpImpl())
 
                 client.apiTest()
                 client.apiTest()
@@ -43,7 +44,7 @@ class SlackWebClientImplTest {
         @Test
         fun `args are passed`() {
             runBlocking {
-                val client = SlackWebClientImpl("dummy")
+                val client = SlackWebClientImpl("dummy", KhttpImpl())
 
                 val argsToReturn = mapOf("hej" to "hello", "x" to "z")
 
@@ -56,7 +57,7 @@ class SlackWebClientImplTest {
         @Test
         fun `error is passed`() {
             runBlocking {
-                val client = SlackWebClientImpl("dummy")
+                val client = SlackWebClientImpl("dummy", KhttpImpl())
 
                 val expected = "myError"
                 val response = client.apiTest(error = expected)
@@ -75,7 +76,7 @@ class SlackWebClientImplTest {
         @Test
         fun `bogus token`() {
             runBlocking {
-                val client = SlackWebClientImpl("not-a-token")
+                val client = SlackWebClientImpl("not-a-token", KhttpImpl())
                 val response = client.authTest()
 
                 assertFalse(response.ok)
@@ -85,7 +86,9 @@ class SlackWebClientImplTest {
         @Test
         fun `real token`() {
             runBlocking {
-                val client = SlackWebClientImpl(System.getProperty("slack.token"))
+                val client = SlackWebClientImpl(System.getProperty("slack.token"),
+                    KhttpImpl()
+                )
                 val response = client.authTest()
 
                 with(response) {
@@ -110,7 +113,9 @@ class SlackWebClientImplTest {
         fun `make a real call`() {
 
             runBlocking {
-                val client = SlackWebClientImpl(System.getProperty("slack.token"))
+                val client = SlackWebClientImpl(System.getProperty("slack.token"),
+                    KhttpImpl()
+                )
                 val response = client.usersList(limit = 1)
 
                 // Tip: Add a breakpoint below to inspect the response
@@ -130,7 +135,9 @@ class SlackWebClientImplTest {
         fun `make a real call`() {
 
             runBlocking {
-                val client = SlackWebClientImpl(System.getProperty("slack.token"))
+                val client = SlackWebClientImpl(System.getProperty("slack.token"),
+                    KhttpImpl()
+                )
                 val response = client.conversationsList(limit = 100, types = listOf(ChannelType.PrivateChannel))
                 val x = response.channels.filter { it.name == "codemonkeys" }
                 val r2 = client.conversationsInfo(x[0].id)

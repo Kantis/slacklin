@@ -1,6 +1,7 @@
 package se.codeboss.slacklin
 
 import se.codeboss.slacklin.model.*
+import se.codeboss.slacklin.response.*
 import java.time.LocalDateTime
 
 interface SlackWebClient {
@@ -15,11 +16,11 @@ interface SlackWebClient {
     ): ConversationsListResponse
 
     suspend fun conversationsInfo(
-        channel: ChannelId
+        id: ChannelId
     ): ConversationsInfoResponse
 
     suspend fun conversationsHistory(
-        channel: ChannelId,
+        id: ChannelId,
         cursor: String? = null,
         inclusive: Boolean = true,
         latest: LocalDateTime? = null,
