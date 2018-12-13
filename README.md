@@ -1,7 +1,7 @@
 # Slacklin
 
-[![Travis CI](https://img.shields.io/travis/kantis/slacklin/master.svg)](https://travis-ci.org/kantis/slacklin)
-[![Codecov](https://img.shields.io/codecov/c/github/kantis/slacklin.svg)](https://codecov.io/github/kantis/slacklin)
+[![Travis CI](https://img.shields.io/travis/Kantis/slacklin/master.svg)](https://travis-ci.org/Kantis/slacklin)
+[![Codecov](https://img.shields.io/codecov/c/github/Kantis/slacklin.svg)](https://codecov.io/github/Kantis/slacklin)
 
 A Slack client written in Kotlin using coroutines
 

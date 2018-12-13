@@ -34,7 +34,7 @@ class EndpointTest {
         val delta = System.currentTimeMillis() - start
 
         // Allow some time for overhead
-        assertNearlyEquals(1400, delta, 100)
+        assertNearlyEquals(1400, delta, 1000)
 
         verify(exactly = 100) { http.get(any(), any()) }
     }
