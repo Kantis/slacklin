@@ -7,16 +7,13 @@ import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import se.codeboss.slacklin.assertNearlyEquals
 import se.codeboss.slacklin.internal.httpfacade.Http
-import se.codeboss.slacklin.internal.httpfacade.HttpResponse
 
 class EndpointTest {
 
     private val http = mockk<Http>()
-    private val mockResponse = mockk<HttpResponse>()
 
     init {
-        every { mockResponse.text } returns ""
-        every { http.get(any(), any()) } returns mockResponse
+        every { http.get(any(), any()) } returns ""
     }
 
     private val builder = Endpoint.Builder(http)
