@@ -23,25 +23,6 @@ class SlackWebClientImplTest {
     inner class ApiTestTest {
 
         @Test
-        fun `burst apiTest`() {
-
-            val timestamp = System.currentTimeMillis()
-
-            runBlocking {
-                val client = SlackWebClientImpl("dummy", KhttpImpl())
-
-                client.apiTest()
-                client.apiTest()
-                client.apiTest()
-            }
-
-            val delta = System.currentTimeMillis() - timestamp
-
-            assertTrue(delta > 2000, "Delta was $delta")
-
-        }
-
-        @Test
         fun `args are passed`() {
             runBlocking {
                 val client = SlackWebClientImpl("dummy", KhttpImpl())
@@ -49,8 +30,11 @@ class SlackWebClientImplTest {
                 val argsToReturn = mapOf("hej" to "hello", "x" to "z")
 
                 val response = client.apiTest(argsToReturn = argsToReturn)
-                assertTrue(response.ok)
-                assertEquals(argsToReturn, response.args)
+
+                with(response) {
+                    assertTrue(ok)
+                    assertEquals(argsToReturn, args)
+                }
             }
         }
 
@@ -65,6 +49,7 @@ class SlackWebClientImplTest {
                 assertEquals(expected, response.error)
             }
         }
+
     }
 
     /**
@@ -83,6 +68,7 @@ class SlackWebClientImplTest {
             }
         }
 
+        @Disabled
         @Test
         fun `real token`() {
             runBlocking {

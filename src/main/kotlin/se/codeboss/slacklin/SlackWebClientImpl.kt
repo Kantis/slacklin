@@ -19,8 +19,10 @@ class SlackWebClientImpl(private val token: String, http: Http) : SlackWebClient
     private val conversationsInfo = endpointBuilder.build("conversations.info", 50)
 
     override suspend fun apiTest(error: String?, argsToReturn: Map<String, String>): ApiTestResponse {
-        val payload = if (error != null) mapOf("error" to error) + argsToReturn else argsToReturn
-        return apiTest.post(payload, ApiTestResponse::class.java)
+        val data = HashMap<String, String>()
+        if (error != null) data["error"] = error
+
+        return apiTest.post(data + argsToReturn, ApiTestResponse::class.java)
     }
 
     override suspend fun authTest(): AuthTestResponse {
