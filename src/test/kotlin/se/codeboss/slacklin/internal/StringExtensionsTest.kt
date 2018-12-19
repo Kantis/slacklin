@@ -23,4 +23,10 @@ class StringExtensionsTest {
         assertEquals("my_value", "MyValue".toLowerCaseWithUnderscores())
     }
 
+    @Test
+    fun `with join to string`() {
+        val strings = listOf("MyName", "MyAge")
+        assertEquals("my_name,my_age", strings.joinToString(separator = ",") { it.toLowerCaseWithUnderscores() })
+    }
+
 }
